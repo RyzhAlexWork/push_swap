@@ -72,10 +72,15 @@ void	ft_support2(char *str, t_list *stack_a, t_list *stack_b)
 	int i;
 
 	i = 0;
-	while (str[i] != '\0')
+	while (str != NULL && str[i] != '\0')
 	{
 		if (ft_validcom(str + i, &stack_a, &stack_b) == -1)
 		{
+			ft_strdel(&str);
+			if (stack_a != NULL)
+				ft_clear_list(&stack_a);
+			if (stack_b != NULL)
+				ft_clear_list(&stack_b);
 			write(2, "Error\n", 6);
 			exit(-1);
 		}
@@ -89,16 +94,29 @@ void	ft_support2(char *str, t_list *stack_a, t_list *stack_b)
 	}
 }
 
-void	ft_support(char *line, char *str, t_list *stack_a, t_list *stack_b)
+void	ft_support(char *line, t_list *stack_a, t_list *stack_b)
 {
+	char *str;
+
+	str = NULL;
 	while (get_next_line(0, &line))
 	{
 		str = ft_strjoinfree(str, line);
 		str = ft_strjoinfree(str, "\n");
+		if (line != NULL)
+			ft_strdel(&line);
 	}
+	if (line != NULL)
+		ft_strdel(&line);
 	ft_support2(str, stack_a, stack_b);
+	if (str != NULL)
+		ft_strdel(&str);
 	if (ft_checkpovt(stack_a) == -1)
 	{
+		if (stack_a != NULL)
+			ft_clear_list(&stack_a);
+		if (stack_b != NULL)
+			ft_clear_list(&stack_b);
 		write(2, "Error\n", 6);
 		exit(-1);
 	}
@@ -109,12 +127,10 @@ int		main(int argc, char **argv)
 	t_list	*stack_a;
 	t_list	*stack_b;
 	char	*line;
-	char	*str;
 
 	line = NULL;
 	stack_a = NULL;
 	stack_b = NULL;
-	str = ft_strnew(10);
 	if (ft_validation(argc, argv, &stack_a) == -1)
 	{
 		write(2, "Error\n", 6);
@@ -122,11 +138,10 @@ int		main(int argc, char **argv)
 	}
 	while (stack_a->prev != NULL)
 		stack_a = stack_a->prev;
-	ft_support(line, str, stack_a, stack_b);
+	ft_support(line, stack_a, stack_b);
 	lastcheck(stack_a, stack_b);
 	if (stack_b != NULL)
 		ft_clear_list(&stack_b);
 	ft_clear_list(&stack_a);
-	free(line);
 	return (0);
 }

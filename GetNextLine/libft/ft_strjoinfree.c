@@ -18,14 +18,19 @@ char	*ft_strjoinfree(char *s1, char const *s2)
 	size_t	i;
 
 	i = 0;
-	if (s1 == NULL || s2 == NULL)
+	if (s2 == NULL)
 		return (NULL);
-	i = ft_strlen(s1) + ft_strlen(s2);
+	if (s1 != NULL)
+		i = ft_strlen(s1) + ft_strlen(s2);
+	else
+		i = ft_strlen(s2);
 	str = ft_strnew(i);
 	if (str == NULL)
 		return (NULL);
-	str = ft_strcat(str, s1);
+	if (s1 != NULL)
+		str = ft_strcat(str, s1);
 	str = ft_strcat(str, s2);
-	ft_strdel(&s1);
+	if (s1 != NULL)
+		ft_strdel(&s1);
 	return (str);
 }
