@@ -71,9 +71,9 @@ void				ft_push_rot(t_list **stack_a, t_list **stack_b, int i);
 int					ft_checksort(t_list *l_num);
 int					*ft_makearray(t_list *l_num, int *i);
 void				ft_support(char *line,
-		t_list *stack_a, t_list *stack_b);
-void				ft_support2(char *str, t_list *stack_a,
-		t_list *stack_b);
+		t_list **stack_a, t_list **stack_b);
+void				ft_support2(char *str, t_list **stack_a,
+		t_list **stack_b);
 int					lastcheck(t_list *stack_a, t_list *stack_b);
 
 #endif
